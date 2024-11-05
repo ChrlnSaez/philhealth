@@ -11,7 +11,7 @@ This is a Node.js frontend application using React.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/ervnjmsdnts/philhealth-be.git
+git clone https://github.com/ChrlnSaez/philhealth.git
 cd philhealth
 ```
 
@@ -25,7 +25,7 @@ npm install
 
 ### 3. Backend Service
 
-Make sure to run the [backend service]("https://github.com/ervnjmsdnts/philhealth-be.git") first
+Make sure to run the [backend service](https://github.com/ervnjmsdnts/philhealth-be.git) first
 
 ### 4. Start the Development Server
 
