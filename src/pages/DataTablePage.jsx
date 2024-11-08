@@ -28,6 +28,7 @@ import DeleteModal from './DeleteModal';
 import { format } from 'date-fns';
 import { CSVLink } from 'react-csv';
 
+// Function to capitalize the first letter of a given string
 const capitalize = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
@@ -35,41 +36,52 @@ const capitalize = (str) => {
 export default function DataTablePage() {
   // State for handling which table to show (Facility or Healthcare Professional)
   const [searchParams, setSearchParams] = useSearchParams();
+  // State to store the current filter based on the URL query parameter or default to 'Facility'
   const [filter, setFilter] = useState(
     searchParams.get('filter') ?? 'Facility'
   );
+  // State to manage the visibility of modals for editing, deleting, and adding records
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [addModalOpen, setAddModalOpen] = useState(false);
+  // State to hold the current row selected for editing
   const [currentRow, setCurrentRow] = useState(null);
+  // State to hold the ID of the selected row for deletion
   const [selectedId, setSelectedId] = useState(null);
 
+  // State to store fetched facilities data
   const [facilities, setFacilities] = useState([]);
 
+  // State to store fetched healthcare professionals data
   const [healthCare, setHealthCare] = useState([]);
 
+  // State to handle the search term for filtering table data
   const [search, setSearch] = useState('');
 
+  // useEffect to fetch facilities and healthcare data when the component mounts
   useEffect(() => {
+    // Function to fetch facilities data from API
     const getAllFacilities = async () => {
       try {
         const response = await request.get('/facility');
 
         setFacilities(response.data);
       } catch (error) {
-        console.log(error);
+        console.log(error); // Log any errors in the request
       }
     };
 
+    // Function to fetch healthcare professionals data from API
     const getAllHealthCare = async () => {
       try {
         const response = await request.get('/health-professional');
 
         setHealthCare(response.data);
       } catch (error) {
-        console.log(error);
+        console.log(error); // Log any errors in the request
       }
     };
+    // Call both functions to fetch data
     getAllFacilities();
     getAllHealthCare();
   }, []);
@@ -111,6 +123,7 @@ export default function DataTablePage() {
           '',
         ];
 
+  // Memoized table data that applies search filter if a search term exists
   const tableData = useMemo(
     () =>
       search
@@ -140,6 +153,8 @@ export default function DataTablePage() {
     setSelectedId(null);
     setDeleteModalOpen(false);
   };
+
+  // Memoized data for exporting to CSV, formatted based on the filter type and table data
   const csvData = useMemo(
     () =>
       TABLE_ROWS.map((item) => ({

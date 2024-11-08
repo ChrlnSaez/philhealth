@@ -12,6 +12,7 @@ import {
 } from 'recharts';
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline';
 
+// Define color shades for alternating bars in the chart
 const alternatingShades = [
   '#FDD835', // Original Yellow
   '#4CAF50', // Original Green
@@ -38,6 +39,7 @@ const alternatingShades = [
 const MultiLevelBarChart = ({ choose, facilities, healthCare }) => {
   const [filter, setFilter] = useState('monthly'); // Default filter is "yearly"
 
+  // Aggregate healthcare data by month
   const monthlyHealthCare = healthCare?.reduce(
     (acc, record) => {
       const createdMonth = new Date(record.createdAt).getMonth(); // 0 = January, 1 = February, etc.
@@ -108,6 +110,7 @@ const MultiLevelBarChart = ({ choose, facilities, healthCare }) => {
     Array.from({ length: 4 }, (_, i) => ({ name: `Q${i + 1}` }))
   );
 
+  // Identify unique specializations from the data, excluding 'name'
   const specializations = Array.from(
     new Set(
       (filter === 'monthly'
@@ -121,6 +124,7 @@ const MultiLevelBarChart = ({ choose, facilities, healthCare }) => {
     )
   );
 
+  // Aggregate facility data by month
   const monthlyFacility = facilities?.reduce(
     (acc, record) => {
       const month = new Date(record.createdAt).getMonth(); // 0 = January, 1 = February, etc.
@@ -143,6 +147,7 @@ const MultiLevelBarChart = ({ choose, facilities, healthCare }) => {
     }))
   );
 
+  // Aggregate facility data by year
   const yearlyFacility = facilities?.reduce((acc, record) => {
     const year = new Date(record.createdAt).getFullYear();
     const level = `level${record.level}`;
@@ -194,6 +199,7 @@ const MultiLevelBarChart = ({ choose, facilities, healthCare }) => {
     return choose ? monthlyHealthCare : monthlyFacility; // Default data
   };
 
+  // Handle filter selection change
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
   };

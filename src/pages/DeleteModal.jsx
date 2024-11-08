@@ -7,20 +7,28 @@ import request from '../lib/request';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 
 export default function DeleteModal({ open, onClose, filter, id }) {
+  // Hook to navigate after deletion (e.g., refreshing the page)
   const navigate = useNavigate();
 
+  // Callback function to handle the deletion request
   const handleSubmit = useCallback(async () => {
+    // Determine the endpoint based on the filter type (Facility or Healthcare Professional)
     const endpoint =
       filter === 'Facility' ? '/facility' : '/health-professional';
 
     try {
+      // Log the URL for debugging purposes
       console.log(`${endpoint}/${id}`);
+      // Send a DELETE request to the appropriate endpoint with the given ID
       await request.delete(`${endpoint}/${id}`, {
-        ...data,
+        ...data, // No extra data to send in this case, so this can be omitted if unnecessary
       });
+      // Close the modal upon successful deletion
       onClose();
+      // Refresh the page or redirect as needed
       navigate(0);
     } catch (error) {
+      // Log any errors encountered during the deletion request
       console.log(error);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import request from '../lib/request';
 
+// Array of special options for selection, each with a value and label
 const specialOptions = [
   { value: 'ob-gyn', label: 'OB-GYN' },
   { value: 'pediatrician', label: 'Pediatrician' },
@@ -14,33 +15,44 @@ const specialOptions = [
   { value: 'dentist', label: 'Dentist' },
 ];
 
+// Function to sort options alphabetically by the 'value' field and add an 'Other' option at the end
 function sortOptions(options) {
+  // Sort options alphabetically based on the 'value' property
   const sortedOptions = options.sort((a, b) => a.value.localeCompare(b.value));
 
+  // Add 'Other' as an additional option at the end of the sorted list
   sortedOptions.push({ value: 'other', label: 'Other' });
 
   return sortedOptions;
 }
 
+// Sort and store the options in sortedOptions for use in the component
 const sortedOptions = sortOptions(specialOptions);
 
 export default function EditModal({ open, onClose, currentRow, filter }) {
+  // State to manage the form fields, initially set to the values of the current row
   const [state, setState] = useState({ ...currentRow });
 
+  // Update state whenever the currentRow changes (e.g., when selecting a different row to edit)
   useEffect(() => {
-    if (!currentRow) return;
+    if (!currentRow) return; // If no current row is selected, skip updating
 
-    setState({ ...currentRow });
+    setState({ ...currentRow }); // Set state to the current row's data
   }, [currentRow]);
 
+  // Hook to navigate after submission
   const navigate = useNavigate();
 
+  // Submit handler to update the current record in the backend
   const handleSubmit = useCallback(async () => {
+    // Determine the endpoint based on the filter type (Facility or Healthcare Professional)
     const endpoint =
       filter === 'Facility' ? '/facility' : '/health-professional';
 
+    // Log current state data for debugging purposes
     console.log(state);
     try {
+      // Send a PUT request to update the current record with formatted date fields
       await request.put(`${endpoint}/${state?.id}`, {
         ...state,
         sendDate: state?.sendDate ? new Date(state.sendDate).getTime() : null,
@@ -51,13 +63,15 @@ export default function EditModal({ open, onClose, currentRow, filter }) {
           ? new Date(state.dateClaimed).getTime()
           : null,
       });
+      // Close the modal after successful submission
       onClose();
+      // Refresh the page or navigate as needed
       navigate(0);
     } catch (error) {
-      console.log(error);
+      console.log(error); // Log any errors encountered during the request
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter, state]);
+  }, [filter, state]); // Dependencies include filter and state to rerun if these values change
   return (
     <Modal
       open={open}

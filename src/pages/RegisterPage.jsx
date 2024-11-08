@@ -6,11 +6,16 @@ import request from '../lib/request';
 import toast from 'react-hot-toast';
 
 export default function RegisterPage() {
+  // Hook to navigate to different routes after registration
   const Navigate = useNavigate();
+
+  // State variables for form fields
   const [employeeName, setEmployeeName] = useState('');
   const [employeeNumber, setEmployeeNumber] = useState('');
   const [password, setPassword] = useState('');
+  // State to toggle password visibility
   const [showPassword, setShowPassword] = useState(false);
+  // State to store any validation errors for form fields
   const [errors, setErrors] = useState({
     employeeName: '',
     employeeNumber: '',
@@ -18,45 +23,55 @@ export default function RegisterPage() {
   });
   const navigate = useNavigate();
 
+  // Submit handler for the registration form
   const handleSubmit = useCallback(
     async (e) => {
-      e.preventDefault();
+      e.preventDefault(); // Prevent form from refreshing the page
 
       // Validation check
       let formErrors = {};
+      // Check if employee name is empty and add an error message if so
       if (!employeeName) {
         formErrors.employeeName = 'Employee Name is required!';
       }
+      // Check if employee number is empty and add an error message if so
       if (!employeeNumber) {
         formErrors.employeeNumber = 'Employee Number is required!';
       }
+      // Check if password is empty and add an error message if so
       if (!password) {
         formErrors.password = 'Password is required!';
       }
 
+      // Update errors state with validation results
       setErrors(formErrors);
 
+      // If there are validation errors, stop further execution
       if (Object.keys(formErrors).length > 0) {
         return;
       }
 
       try {
+        // Send registration request to the backend API
         await request.post('/auth/register', {
           code: employeeNumber,
           name: employeeName,
           password,
         });
+        // Show success message upon successful registration
         toast.success('Employee Added');
+        // Redirect user to the sign-in page after registration
         navigate('/sign-in');
       } catch (error) {
-        console.log(error.message);
-        toast.error(error.message);
+        console.log(error.message); // Log error message
+        toast.error(error.message); // Show error message to the user
       }
 
+      // Clear errors after submission attempt
       setErrors('');
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [employeeName, employeeNumber, password]
+    [employeeName, employeeNumber, password] // Dependency array to re-run the function if these values change
   );
 
   return (

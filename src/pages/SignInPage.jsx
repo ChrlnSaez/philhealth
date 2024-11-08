@@ -6,42 +6,63 @@ import toast from 'react-hot-toast';
 import request from '../lib/request';
 
 export default function SignInPage() {
+  // Initialize navigate function to redirect after successful login
   const Navigate = useNavigate();
+
+  // State to hold employee number input
   const [employeeNumber, setEmployeeNumber] = useState('');
+  // State to hold password input
   const [password, setPassword] = useState('');
+  // State to toggle visibility of password
   const [showPassword, setShowPassword] = useState(false);
+  // State to track form validation errors
   const [errors, setErrors] = useState({ employeeNumber: '', password: '' });
 
+  // Initialize navigate function for redirecting after login
   const navigate = useNavigate();
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission behavior
 
+    // Initialize an empty object to store validation errors
     let formErrors = {};
+
+    // Check if employee number is provided, otherwise set an error message
     if (!employeeNumber) {
       formErrors.employeeNumber = 'Employee number is required!';
     }
+    // Check if password is provided, otherwise set an error message
     if (!password) {
       formErrors.password = 'Password is required!';
     }
 
+    // Update errors state with any validation errors
     setErrors(formErrors);
 
+    // If there are errors, stop further execution
     if (Object.keys(formErrors).length > 0) {
       return;
     }
 
     try {
+      // Send login request to the server with employee number and password
       const response = await request.post('/auth/login', {
         code: employeeNumber,
         password,
       });
+      // Store token and user profile in local storage on successful login
       localStorage.setItem('token', response.data?.token);
       localStorage.setItem('profile', JSON.stringify(response.data?.profile));
+
+      // Show success message to the user
       toast.success('Employee Sign In');
+      // Navigate to the dashboard page after login
       navigate('/dashboard');
     } catch (error) {
+      // Log error message if login fails
       console.log(error.message);
+      // Show error message to the user
       toast.error(error.message);
     }
 

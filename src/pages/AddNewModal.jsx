@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react';
 import request from '../lib/request';
 import { useNavigate } from 'react-router-dom';
 
+// Options array containing different types of healthcare professionals with specific values and labels
 const specialOptions = [
   { value: 'ob-gyn', label: 'OB-GYN' },
   { value: 'pediatrician', label: 'Pediatrician' },
@@ -14,15 +15,19 @@ const specialOptions = [
   { value: 'dentist', label: 'Dentist' },
 ];
 
+// Function to sort options alphabetically by the 'value' field and add an 'Other' option at the end
 function sortOptions(options) {
   const sortedOptions = options.sort((a, b) => a.value.localeCompare(b.value));
 
+  // Add 'Other' as an additional option at the end of the sorted list
   sortedOptions.push({ value: 'other', label: 'Other' });
 
   return sortedOptions;
 }
+// Sort and store the options in sortedOptions variable for further use in the component
 const sortedOptions = sortOptions(specialOptions);
 
+// Main component to add a new entry, with modal props 'open' to control visibility and 'onClose' for closing the modal
 export default function AddNewModal({ open, onClose, filter }) {
   const [state, setState] = useState({
     name: '',
@@ -30,10 +35,11 @@ export default function AddNewModal({ open, onClose, filter }) {
     contactNumber: '',
     licenceNumber: '',
     email: '',
-    level: '1',
-    specialization: 'other',
+    level: '1', // Default level, assuming 'Facility' level structure
+    specialization: 'other', // Default specialization is set to 'other'
   });
 
+  // Handle changes to input fields in the form, updating the corresponding state properties
   const handleChange = (event) => {
     const value = event.target.value;
     setState((prevState) => ({
@@ -42,23 +48,30 @@ export default function AddNewModal({ open, onClose, filter }) {
     }));
   };
 
+  // Hook for navigating after submission
   const navigate = useNavigate();
 
+  // Submit handler for the form, making an API request based on the 'filter' type
   const handleSubmit = useCallback(async () => {
+    // Set API endpoint based on the 'filter' prop
     const endpoint =
       filter === 'Facility' ? '/facility' : '/health-professional';
 
+    // Extract fields and prepare data payload for the API request
     const { level, specialization, ...data } = state;
 
     try {
+      // Make a POST request with relevant data based on the 'filter' type
       await request.post(endpoint, {
         ...data,
         ...(filter === 'Facility' ? { level } : { specialization }),
       });
+      // Close the modal after successful submission
       onClose();
+      // Refresh the page
       navigate(0);
     } catch (error) {
-      console.log(error);
+      console.log(error); // Log any errors for debugging
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, filter]);
