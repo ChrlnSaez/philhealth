@@ -21,6 +21,14 @@ export default function SignInPage() {
   // Initialize navigate function for redirecting after login
   const navigate = useNavigate();
 
+  const handleEmployeeNumberChange = (e) => {
+    const input = e.target.value;
+    // Allow only numbers and a maximum of 8 digits
+    if (input.length <= 8) {
+      setEmployeeNumber(input);
+    }
+  };
+
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
@@ -32,6 +40,7 @@ export default function SignInPage() {
     if (!employeeNumber) {
       formErrors.employeeNumber = 'Employee number is required!';
     }
+
     // Check if password is provided, otherwise set an error message
     if (!password) {
       formErrors.password = 'Password is required!';
@@ -90,7 +99,7 @@ export default function SignInPage() {
                 type='number'
                 placeholder='987654321'
                 value={employeeNumber}
-                onChange={(e) => setEmployeeNumber(e.target.value)}
+                onChange={handleEmployeeNumberChange}
                 className={`w-full mt-1 px-3 py-2 border ${
                   errors.employeeNumber
                     ? 'border-red-500 focus:ring-red-500 focus:border-red-500'

@@ -23,6 +23,14 @@ export default function RegisterPage() {
   });
   const navigate = useNavigate();
 
+  const handleEmployeeNumberChange = (e) => {
+    const input = e.target.value;
+    // Allow only numbers and a maximum of 8 digits
+    if (input.length <= 8) {
+      setEmployeeNumber(input);
+    }
+  };
+
   // Submit handler for the registration form
   const handleSubmit = useCallback(
     async (e) => {
@@ -118,7 +126,7 @@ export default function RegisterPage() {
                 type='number'
                 placeholder='987654321'
                 value={employeeNumber}
-                onChange={(e) => setEmployeeNumber(e.target.value)}
+                onChange={handleEmployeeNumberChange}
                 className={`w-full mt-1 px-3 py-2 border ${
                   errors.employeeNumber
                     ? 'border-red-500 focus:ring-red-500 focus:border-red-500'

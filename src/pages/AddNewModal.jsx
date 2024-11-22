@@ -15,12 +15,9 @@ const specialOptions = [
   { value: 'dentist', label: 'Dentist' },
 ];
 
-// Function to sort options alphabetically by the 'value' field and add an 'Other' option at the end
+// Function to sort options alphabetically by the 'value' field
 function sortOptions(options) {
   const sortedOptions = options.sort((a, b) => a.value.localeCompare(b.value));
-
-  // Add 'Other' as an additional option at the end of the sorted list
-  sortedOptions.push({ value: 'other', label: 'Other' });
 
   return sortedOptions;
 }
@@ -36,7 +33,6 @@ export default function AddNewModal({ open, onClose, filter }) {
     licenceNumber: '',
     email: '',
     level: '1', // Default level, assuming 'Facility' level structure
-    specialization: 'other', // Default specialization is set to 'other'
   });
 
   // Handle changes to input fields in the form, updating the corresponding state properties

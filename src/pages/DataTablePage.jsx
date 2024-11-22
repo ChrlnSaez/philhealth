@@ -102,9 +102,10 @@ export default function DataTablePage() {
           'Email',
           'Send Date',
           'Received Date',
-          'Status',
+          'Claim Status',
+          'Accreditation Status',
           'Date Claimed',
-          '',
+          'Received By',
           '',
         ]
       : [
@@ -117,9 +118,10 @@ export default function DataTablePage() {
           'Level',
           'Send Date',
           'Received Date',
-          'Status',
+          'Claim Status',
+          'Accreditation Status',
           'Date Claimed',
-          '',
+          'Received By',
           '',
         ];
 
@@ -171,10 +173,14 @@ export default function DataTablePage() {
         ['Received Date']: item?.receivedDate
           ? format(item.receivedDate, 'PP')
           : null,
-        Status: item.status === 'NOT_RECEIVED' ? 'NOT RECEIVED' : 'RECEIVED',
+        'Claim Status':
+          item.status === 'NOT_RECEIVED' ? 'NOT RECEIVED' : 'RECEIVED',
+        'Accreditation Status':
+          item.accreditationStatus === 'PENDING' ? 'PENDING' : 'ACCEPTED',
         ['Date Claimed']: item?.dateClaimed
           ? format(item.dateClaimed, 'PP')
           : null,
+        ['Received By']: item?.receivedBy,
       })),
     [filter, TABLE_ROWS]
   );
@@ -377,10 +383,36 @@ export default function DataTablePage() {
                       </div>
                     </td>
                     <td className={classes}>
+                      <div className='w-max'>
+                        <Chip
+                          size='sm'
+                          variant='ghost'
+                          value={
+                            row.accreditationStatus === 'PENDING'
+                              ? 'PENDING'
+                              : 'ACCEPTED'
+                          }
+                          color={
+                            row.accreditationStatus === 'ACCEPTED'
+                              ? 'green'
+                              : 'yellow'
+                          }
+                        />
+                      </div>
+                    </td>
+
+                    <td className={classes}>
                       <Typography variant='small' className='font-normal'>
                         {row.dateClaimed ? format(row.dateClaimed, 'PP') : null}
                       </Typography>
                     </td>
+
+                    <td className={classes}>
+                      <Typography variant='small' className='font-normal'>
+                        {row.receivedBy}
+                      </Typography>
+                    </td>
+
                     <td className={classes}>
                       <Tooltip content='Edit Details'>
                         <IconButton
@@ -390,8 +422,6 @@ export default function DataTablePage() {
                           <PencilIcon className='h-4 w-4' />
                         </IconButton>
                       </Tooltip>
-                    </td>
-                    <td className={classes}>
                       <Tooltip content='Delete'>
                         <IconButton
                           onClick={() => handleDeleteModalOpen(row.id)}

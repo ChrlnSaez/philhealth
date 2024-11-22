@@ -13,6 +13,8 @@ export default function DashboardPage() {
   // State to store the list of healthcare professionals fetched from the API
   const [healthCare, setHealthCare] = useState([]);
 
+  const [selectedYear, setSelectedYear] = useState(2024);
+
   // useEffect to fetch data from the API when the component mounts
   useEffect(() => {
     // Function to fetch all facilities from the API
@@ -47,9 +49,15 @@ export default function DashboardPage() {
   }, []);
 
   // Set choose state to false, indicating a facility is selected
-  const isFacility = () => setChoose(false);
+  const isFacility = () => {
+    setChoose(false);
+    setSelectedYear(2024);
+  };
   // Set choose state to true, indicating a healthcare professional is selected
-  const isHealthCare = () => setChoose(true);
+  const isHealthCare = () => {
+    setChoose(true);
+    setSelectedYear(2024);
+  };
 
   return (
     <div>
@@ -62,6 +70,8 @@ export default function DashboardPage() {
       />
       <BarChartWithValues
         choose={choose}
+        setSelectedYear={setSelectedYear}
+        selectedYear={selectedYear}
         facilities={facilities}
         healthCare={healthCare}
       />
