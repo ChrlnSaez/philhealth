@@ -5,24 +5,24 @@ import { useCallback, useState } from 'react';
 import request from '../lib/request';
 import { useNavigate } from 'react-router-dom';
 
-// Options array containing different types of healthcare professionals with specific values and labels
-const specialOptions = [
-  { value: 'ob-gyn', label: 'OB-GYN' },
-  { value: 'pediatrician', label: 'Pediatrician' },
-  { value: 'surgeon', label: 'Surgeon' },
-  { value: 'doctor', label: 'Doctor' },
-  { value: 'nurse', label: 'Nurse' },
-  { value: 'dentist', label: 'Dentist' },
-];
+// // Options array containing different types of healthcare professionals with specific values and labels
+// const specialOptions = [
+//   { value: 'ob-gyn', label: 'OB-GYN' },
+//   { value: 'pediatrician', label: 'Pediatrician' },
+//   { value: 'surgeon', label: 'Surgeon' },
+//   { value: 'doctor', label: 'Doctor' },
+//   { value: 'nurse', label: 'Nurse' },
+//   { value: 'dentist', label: 'Dentist' },
+// ];
 
-// Function to sort options alphabetically by the 'value' field
-function sortOptions(options) {
-  const sortedOptions = options.sort((a, b) => a.value.localeCompare(b.value));
+// // Function to sort options alphabetically by the 'value' field
+// function sortOptions(options) {
+//   const sortedOptions = options.sort((a, b) => a.value.localeCompare(b.value));
 
-  return sortedOptions;
-}
-// Sort and store the options in sortedOptions variable for further use in the component
-const sortedOptions = sortOptions(specialOptions);
+//   return sortedOptions;
+// }
+// // Sort and store the options in sortedOptions variable for further use in the component
+// const sortedOptions = sortOptions(specialOptions);
 
 // Main component to add a new entry, with modal props 'open' to control visibility and 'onClose' for closing the modal
 export default function AddNewModal({ open, onClose, filter }) {
@@ -138,7 +138,7 @@ export default function AddNewModal({ open, onClose, filter }) {
               value={state.name}
             />
             {/* Specialization Dropdown */}
-            <div className='flex flex-col relative'>
+            {/* <div className='flex flex-col relative'>
               <label className='absolute -top-2 left-3 bg-white px-1 text-xs text-gray-500'>
                 Specialization
               </label>
@@ -153,7 +153,13 @@ export default function AddNewModal({ open, onClose, filter }) {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
+            <Input
+              label='Specialization'
+              onChange={handleChange}
+              name='specialization'
+              value={state.specialization}
+            />
             <Input
               label='Address'
               name='address'

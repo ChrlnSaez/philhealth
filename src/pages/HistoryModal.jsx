@@ -6,13 +6,23 @@ export default function HistoryModal({
   onRequestClose,
   chartData,
   chartType,
+  filter, // Ensure the filter prop is being passed correctly
 }) {
   const realData = chartData?.reduce((acc, data) => {
     const hasOnlyName = Object.keys(data).length === 1;
-
     acc.push({ ...data, ...(hasOnlyName && { noData: true }) });
     return acc;
   }, []);
+
+  // Determine the title suffix based on the filter
+  const titleSuffix =
+    filter === 'yearly'
+      ? 'Year'
+      : filter === 'monthly'
+      ? 'Month'
+      : filter === 'quarterly'
+      ? 'Quarter'
+      : 'History';
 
   return (
     <Modal
@@ -21,13 +31,13 @@ export default function HistoryModal({
       handleOpen={onRequestClose}
       title={`${
         chartType === 'facility' ? 'Facility' : 'Healthcare'
-      } Statistics History`}>
+      } Statistics (${titleSuffix})`}>
       <div className='border rounded-lg'>
         {chartData && chartData.length > 0 ? (
           <table className='border-collapse text-black w-full text-left'>
             <thead>
               <tr>
-                <th className='border-b bg-green-50 p-2'>Month</th>
+                <th className='border-b bg-green-50 p-2'>{titleSuffix}</th>
                 <th className='border-b bg-green-50 p-2'>Values</th>
               </tr>
             </thead>

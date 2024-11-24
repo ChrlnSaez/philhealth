@@ -286,6 +286,7 @@ const MultiLevelBarChart = ({
         onRequestClose={() => setIsModalOpen(false)}
         chartData={getChartData()}
         chartType={choose ? 'healthCare' : 'facility'}
+        filter={filter}
       />
       <div className='w-full flex flex-col justify-center items-center py-4 px-4'>
         <div className='w-full max-h-screen overflow-hidden'>

@@ -5,26 +5,26 @@ import { useNavigate } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
 import request from '../lib/request';
 
-// Array of special options for selection, each with a value and label
-const specialOptions = [
-  { value: 'ob-gyn', label: 'OB-GYN' },
-  { value: 'pediatrician', label: 'Pediatrician' },
-  { value: 'surgeon', label: 'Surgeon' },
-  { value: 'doctor', label: 'Doctor' },
-  { value: 'nurse', label: 'Nurse' },
-  { value: 'dentist', label: 'Dentist' },
-];
+// // Array of special options for selection, each with a value and label
+// const specialOptions = [
+//   { value: 'ob-gyn', label: 'OB-GYN' },
+//   { value: 'pediatrician', label: 'Pediatrician' },
+//   { value: 'surgeon', label: 'Surgeon' },
+//   { value: 'doctor', label: 'Doctor' },
+//   { value: 'nurse', label: 'Nurse' },
+//   { value: 'dentist', label: 'Dentist' },
+// ];
 
-// Function to sort options alphabetically by the 'value' field
-function sortOptions(options) {
-  // Sort options alphabetically based on the 'value' property
-  const sortedOptions = options.sort((a, b) => a.value.localeCompare(b.value));
+// // Function to sort options alphabetically by the 'value' field
+// function sortOptions(options) {
+//   // Sort options alphabetically based on the 'value' property
+//   const sortedOptions = options.sort((a, b) => a.value.localeCompare(b.value));
 
-  return sortedOptions;
-}
+//   return sortedOptions;
+// }
 
-// Sort and store the options in sortedOptions for use in the component
-const sortedOptions = sortOptions(specialOptions);
+// // Sort and store the options in sortedOptions for use in the component
+// const sortedOptions = sortOptions(specialOptions);
 
 export default function EditModal({ open, onClose, currentRow, filter }) {
   // State to manage the form fields, initially set to the values of the current row
@@ -147,7 +147,7 @@ export default function EditModal({ open, onClose, currentRow, filter }) {
                   className='w-full'
                 />
                 {/* Specialization Dropdown */}
-                <div className='w-full flex flex-col relative'>
+                {/* <div className='w-full flex flex-col relative'>
                   <label className='absolute -top-2 left-3 bg-white px-1 text-xs text-gray-500'>
                     Specialization
                   </label>
@@ -163,7 +163,15 @@ export default function EditModal({ open, onClose, currentRow, filter }) {
                       </option>
                     ))}
                   </select>
-                </div>
+                </div> */}
+                <Input
+                  label='Specialization'
+                  value={state?.specialization}
+                  onChange={(e) =>
+                    setState({ ...state, specialization: e.target.value })
+                  }
+                  className='w-full'
+                />
                 <Input
                   label='Email'
                   value={state?.email}
