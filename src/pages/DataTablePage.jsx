@@ -210,7 +210,7 @@ export default function DataTablePage() {
         filter={filter}
       />
 
-      <Card className='h-full flex-1 w-full px-20 shadow-none'>
+      <Card className='h-full flex-1 w-full shadow-none'>
         <CardHeader floated={false} shadow={false} className='rounded-none'>
           <div className='flex flex-col justify-between md:flex-row md:items-center py-4'>
             <div className='flex items-center gap-4'>
