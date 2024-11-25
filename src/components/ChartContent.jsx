@@ -53,7 +53,7 @@ const MultiLevelBarChart = ({
 
   // Aggregate healthcare data by month
   const monthlyHealthCare = healthCare
-    ?.filter((item) => item.status === 'RECIEVED')
+    ?.filter((item) => item.accreditationStatus === 'ACCEPTED')
     ?.reduce((acc, record) => {
       const date = new Date(record.receivedDate);
       const year = date.getFullYear();
@@ -82,7 +82,7 @@ const MultiLevelBarChart = ({
     }, {});
 
   const yearlyHealthCare = healthCare
-    ?.filter((item) => item.status === 'RECIEVED')
+    ?.filter((item) => item.accreditationStatus === 'ACCEPTED')
     ?.reduce((acc, record) => {
       const createdYear = new Date(record.receivedDate).getFullYear();
       const specialization = record.specialization.toLowerCase();
@@ -103,7 +103,7 @@ const MultiLevelBarChart = ({
   const yearlyHealthCareArray = Object.values(yearlyHealthCare ?? {});
 
   const quarterlyHealthCare = healthCare
-    ?.filter((item) => item.status === 'RECIEVED')
+    ?.filter((item) => item.accreditationStatus === 'ACCEPTED')
     ?.reduce((acc, record) => {
       const date = new Date(record.receivedDate);
       const year = date.getFullYear(); // Extract the year (e.g., 2024, 2025)
@@ -140,7 +140,7 @@ const MultiLevelBarChart = ({
   );
 
   const monthlyFacility = facilities
-    ?.filter((item) => item.status === 'RECIEVED')
+    ?.filter((item) => item.accreditationStatus === 'ACCEPTED')
     ?.reduce((acc, record) => {
       const date = new Date(record.receivedDate);
       const year = date.getFullYear();
@@ -169,7 +169,7 @@ const MultiLevelBarChart = ({
 
   // Aggregate facility data by year
   const yearlyFacility = facilities
-    ?.filter((item) => item.status === 'RECIEVED')
+    ?.filter((item) => item.accreditationStatus === 'ACCEPTED')
     ?.reduce((acc, record) => {
       const year = new Date(record.receivedDate).getFullYear();
       const level = `level${record.level}`;
@@ -191,7 +191,7 @@ const MultiLevelBarChart = ({
   const yearlyFacilityArray = Object.values(yearlyFacility ?? {});
 
   const quarterlyFacility = facilities
-    ?.filter((item) => item.status === 'RECIEVED')
+    ?.filter((item) => item.accreditationStatus === 'ACCEPTED')
     ?.reduce((acc, record) => {
       const date = new Date(record.receivedDate);
       const year = date.getFullYear();

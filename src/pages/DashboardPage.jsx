@@ -59,14 +59,22 @@ export default function DashboardPage() {
     setSelectedYear(2024);
   };
 
+  const filteredFacilities = facilities?.filter(
+    (item) => item.accreditationStatus === 'ACCEPTED'
+  );
+
+  const filteredHealthCare = healthCare?.filter(
+    (item) => item.accreditationStatus === 'ACCEPTED'
+  );
+
   return (
     <div>
       <CardWithLink
         isFacility={isFacility}
         isHealthCare={isHealthCare}
         choose={choose}
-        numFacilities={facilities.length}
-        numHealthCare={healthCare.length}
+        numFacilities={filteredFacilities.length}
+        numHealthCare={filteredHealthCare.length}
       />
       <BarChartWithValues
         choose={choose}
