@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
+import {
+  AdjustmentsHorizontalIcon,
+  PencilIcon,
+  PlusIcon,
+  TrashIcon,
+} from '@heroicons/react/24/solid';
 import {
   ArrowDownTrayIcon,
   MagnifyingGlassIcon,
@@ -57,6 +62,9 @@ export default function DataTablePage() {
 
   // State to handle the search term for filtering table data
   const [search, setSearch] = useState('');
+
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
 
   // useEffect to fetch facilities and healthcare data when the component mounts
   useEffect(() => {
@@ -126,15 +134,26 @@ export default function DataTablePage() {
         ];
 
   // Memoized table data that applies search filter if a search term exists
-  const tableData = useMemo(
-    () =>
-      search
-        ? TABLE_ROWS.filter((item) =>
-            item.name.toLowerCase().includes(search.toLowerCase())
-          )
-        : TABLE_ROWS,
-    [search, TABLE_ROWS]
-  );
+  const tableData = useMemo(() => {
+    return TABLE_ROWS.filter((item) => {
+      const matchesSearch = search
+        ? item.name.toLowerCase().includes(search.toLowerCase())
+        : true;
+
+      const itemDate = new Date(item.createdAt);
+      console.log(itemDate.toLocaleString('default', { month: 'long' }));
+      const matchesMonth = selectedMonth
+        ? itemDate
+            .toLocaleString('default', { month: 'long' })
+            .toLowerCase() === selectedMonth
+        : true;
+      const matchesYear = selectedYear
+        ? itemDate.getFullYear().toString() === selectedYear
+        : true;
+
+      return matchesSearch && matchesMonth && matchesYear;
+    });
+  }, [search, selectedMonth, selectedYear, TABLE_ROWS]);
 
   // Edit Modal Management
   const handleEditModalOpen = (row) => {
@@ -255,6 +274,55 @@ export default function DataTablePage() {
                   onChange={(e) => setSearch(e.target.value)}
                   icon={<MagnifyingGlassIcon className='h-5 w-5' />}
                 />
+              </div>
+
+              <div className='relative'>
+                <select
+                  label='Select Month'
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                  className='appearance-none border rounded px-4 py-2 pl-10 text-gray-700 focus:outline-none focus:ring-green-500 focus:border-green-500 bg-gray-100'>
+                  <option value=''>Select Month</option>
+                  <option value='january'>January</option>
+                  <option value='february'>February</option>
+                  <option value='march'>March</option>
+                  <option value='april'>April</option>
+                  <option value='may'>May</option>
+                  <option value='june'>June</option>
+                  <option value='july'>July</option>
+                  <option value='august'>August</option>
+                  <option value='september'>September</option>
+                  <option value='october'>October</option>
+                  <option value='november'>November</option>
+                  <option value='december'>December</option>
+                </select>
+                <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
+                  <AdjustmentsHorizontalIcon className='h-5 w-5 text-gray-500' />
+                </div>
+              </div>
+
+              <div className='relative'>
+                <select
+                  label='Select Year'
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(e.target.value)}
+                  className='appearance-none border rounded px-4 py-2 pl-10 text-gray-700 focus:outline-none focus:ring-green-500 focus:border-green-500 bg-gray-100'>
+                  <option value=''>Select Year</option>
+                  <option value='2030'>2030</option>
+                  <option value='2029'>2029</option>
+                  <option value='2028'>2028</option>
+                  <option value='2027'>2027</option>
+                  <option value='2026'>2026</option>
+                  <option value='2025'>2025</option>
+                  <option value='2024'>2024</option>
+                  <option value='2023'>2023</option>
+                  <option value='2022'>2022</option>
+                  <option value='2021'>2021</option>
+                  <option value='2020'>2020</option>
+                </select>
+                <div className='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none'>
+                  <AdjustmentsHorizontalIcon className='h-5 w-5 text-gray-500' />
+                </div>
               </div>
 
               <Button
